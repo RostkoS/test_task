@@ -11,7 +11,6 @@ let invalidLoginInfo = [       //data of the possible invalid users
 ];
 describe("Negative tests", ()=>{
     //test for the login of the invalid users
-    //(checking the error message and the url of the login page)
     invalidLoginInfo.forEach((invalidUser)=>{
         //calling negative_test function for each user of the invalidLoginInfo array
         it(`Unsuccessful login test: username = '${invalidUser.username}', password = '${invalidUser.password}'`, async ()=>{
@@ -22,12 +21,12 @@ describe("Negative tests", ()=>{
             await driver.findElement(By.id("password")).sendKeys(invalidUser.password);
             await driver.findElement(By.className("radius")).click();
             let msg = await driver.findElement(By.id("flash")).getText();
-            if(invalidUser.username!="tomsmith"){
-                assert.equal(msg.includes("Your username is invalid!"), true);
-            }else if(invalidUser.password!="SuperSecretPassword!"){
-                assert.equal(msg.includes("Your password is invalid!"), true);
+            if(invalidUser.username!="tomsmith"){ //checking if the username is incorrect for this user from invalidLoginInfo
+                assert.equal(msg.includes("Your username is invalid!"), true);//checking if the error is displayed for incorrect username
+            }else if(invalidUser.password!="SuperSecretPassword!"){//checking if the password is incorrect for this user from invalidLoginInfo
+                assert.equal(msg.includes("Your password is invalid!"), true);//checking if the error is displayed for incorrect password
             }
-            assert.equal(await driver.getCurrentUrl(), "https://the-internet.herokuapp.com/login");
+            assert.equal(await driver.getCurrentUrl(), "https://the-internet.herokuapp.com/login"); //checking if user remains on the login page
         } catch (err) {
             console.log(err);
         } finally {
